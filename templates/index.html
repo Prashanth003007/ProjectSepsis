@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RandomForest Care Type Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            flex-direction: column; 
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 600px;
+            text-align: left;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 16px;
+            margin-top: 5%;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+            border: 1.3px solid #ccc;
+            border-radius: 4px;
+        }
+
+        /* Style the prediction and download buttons */
+        button[type="submit"], button[type="button"], button.download-btn {
+            background-color: #4caf50; 
+            color: #fff;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 16px; 
+            display: block; 
+            margin-left: 60%;
+            margin-right: -50%;
+        }
+
+        button[type="submit"]:hover, button[type="button"]:hover, button.download-btn:hover {
+            background-color: #45a049;
+        }
+
+        button.logout-btn {
+            background-color: #007bff; 
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            margin-top: 16px; 
+            position: absolute;
+            top: 10px;
+            right: 40px;
+        }
+
+        button.logout-btn:hover {
+            background-color: #0056b3;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px; 
+        }
+
+        h2 {
+            margin-top: 20px;
+            text-align: center;
+            color: #4caf50;
+        }
+    </style>
+</head>
+<body style="background-image: url('{{ url_for('static', filename='images/bg1.jpg') }}'); background-size: cover; background-position: center;">
+    <button class="logout-btn" onclick="window.location.href='/logout'">Logout</button>
+
+    <h1>PATIENT DETAILS</h1>
+    <form method="post" action="/">
+        
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" name="name" required>
+
+            <label for="ip_no">IP&nbsp;no:</label>
+            <input type="number" name="ip_no" required>
+
+            <label for="gestational_age">Gestational&nbsp;Age&nbsp;(weeks):</label>
+            <input type="number" name="gestational_age" step="0.0000000000001" required>
+        </div>
+
+        <div>
+
+            <label for="resp_rate">Resp.&nbsp;Rate&nbsp;(breaths/min):</label>
+            <input type="number" name="resp_rate" required>
+
+            <label for="heart_rate">Heart&nbsp;Rate&nbsp;(bpm):</label>
+            <input type="number" name="heart_rate" required>
+
+            <label for="oxygen_saturation">Oxygen&nbsp;Saturation&nbsp;(%):</label>
+            <input type="number" name="oxygen_saturation" required>
+
+        </div>
+
+        <div>
+
+            <label for="crp">CRP&nbsp;(mg/L):</label>
+            <input type="number" name="crp" step="0.01" required>
+
+            <label for="maternal_health">Maternal&nbsp;Health:</label>
+            <input type="text" name="maternal_health" required>
+
+            <label for="mode_of_delivery">Mode&nbsp;of&nbsp;Delivery:</label>
+            <input type="text" name="mode_of_delivery" required>
+
+
+            
+        </div>
+
+        <div>
+            <label for="birth_weight">Birth&nbsp;Weight&nbsp;(g):</label>
+            <input type="number" name="birth_weight" step="0.01" required>
+
+            <label for="gender">Gender:</label>
+            <input type="text" name="gender" required>
+        
+        </div>
+
+        <div>
+
+            <label for="tlc">TLC:</label>
+            <input type="text" name="tlc" required>
+
+            <label for="it_ratio">I/T&nbsp;ratio:</label>
+            <input type="number" name="it_ratio" step="0.01" required>
+            
+        </div>
+
+        <div>
+            
+            <label for="apgar_1min">Apgar&nbsp;Score&nbsp;(1min):</label>
+            <input type="number" name="apgar_1min" required>
+
+            <label for="apgar_5min">Apgar&nbsp;Score&nbsp;(5min):</label>
+            <input type="number" name="apgar_5min" required>
+
+        </div>
+
+        <button type="submit">Predict Care Type</button>
+        <button class="download-btn" type="button" onclick="window.location.href='{{ url_for('download_excel') }}'">
+            Download Excel
+        </button>
+        
+    </form>
+
+    {% if result %}
+        <h2>{{ result }}</h2>
+    {% endif %}
+</body>
+</html>

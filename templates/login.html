@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px; 
+        }
+
+        h2 {
+            margin-bottom: 20px; 
+        }
+
+        input[type="submit"] {
+            background-color: #007bff; 
+            color: #ffffff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 50%;
+        }
+    </style>
+</head>
+<body style="background-image: url('{{ url_for('static', filename='images/bg3.png') }}'); background-size: cover; background-position: center;">
+    <h2>LOGIN FORM</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <p>{{ form.username.label }} {{ form.username(size=20) }}</p>
+        <p>{{ form.password.label }} {{ form.password(size=20) }}</p>
+        <p>{{ form.submit() }}</p>
+    </form>
+</body>
+</html>
