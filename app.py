@@ -78,7 +78,7 @@ def index():
             clf_rf = joblib.load('random_forest_model.joblib')
 
             # Load the latest DataFrame from the Excel file
-            df_existing = pd.read_excel('/sepsis data.xlsx')
+            df_existing = pd.read_excel('sepsis data.xlsx')
 
             # Get user input from the form
             user_data = {
