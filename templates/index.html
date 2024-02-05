@@ -22,7 +22,7 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 600px;
+            width: 90%;
             text-align: left;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -39,7 +39,16 @@
         input {
             width: 100%;
             padding: 8px;
+            margin-right: 10%;
             margin-bottom: 12px;
+            box-sizing: border-box;
+            border: 1.3px solid #ccc;
+            border-radius: 4px;
+        }
+
+        select {
+            padding: 12px;
+            margin-bottom: 14px;
             box-sizing: border-box;
             border: 1.3px solid #ccc;
             border-radius: 4px;
@@ -102,38 +111,60 @@
         
         <div>
             <label for="name">Name:</label>
-            <input type="text" name="name" required>
+            <input type="text" name="name" placeholder = "eg: B/O DEMO" required>
 
             <label for="ip_no">IP&nbsp;no:</label>
-            <input type="number" name="ip_no" required>
+            <input type="number" name="ip_no" placeholder = 'eg: 23141610' required>
 
             <label for="gestational_age">Gestational&nbsp;Age&nbsp;(weeks):</label>
-            <input type="number" name="gestational_age" step="0.0000000000001" required>
+            <input type="number" name="gestational_age" step="0.0000000000001" placeholder = 'eg: 38.1428571428572' required>
         </div>
 
         <div>
 
             <label for="resp_rate">Resp.&nbsp;Rate&nbsp;(breaths/min):</label>
-            <input type="number" name="resp_rate" required>
+            <input type="number" name="resp_rate" placeholder="eg: 48" required>
 
             <label for="heart_rate">Heart&nbsp;Rate&nbsp;(bpm):</label>
-            <input type="number" name="heart_rate" required>
+            <input type="number" name="heart_rate" placeholder="eg: 150" required>
 
             <label for="oxygen_saturation">Oxygen&nbsp;Saturation&nbsp;(%):</label>
-            <input type="number" name="oxygen_saturation" required>
+            <input type="number" name="oxygen_saturation" placeholder="eg: 95" required>
 
         </div>
 
         <div>
 
             <label for="crp">CRP&nbsp;(mg/L):</label>
-            <input type="number" name="crp" step="0.01" required>
+            <input type="number" name="crp" step="0.01" placeholder="eg: 2.33" required>
 
             <label for="maternal_health">Maternal&nbsp;Health:</label>
-            <input type="text" name="maternal_health" required>
+            <select id="dropdown" name="maternal_health" required>
+                <option value="PLACENTA PREVIA">PLACENTA PREVIA</option>
+                <option value="MATERAL FEVER AND UTI 2 DAYS PRIOR TO DELIVERY">MATERAL FEVER AND UTI 2 DAYS PRIOR TO DELIVERY</option>
+                <option value="NO">NO</option>
+                <option value="PROM">PROM</option>
+                <option value="UTI ">UTI </option>
+                <option value="CRONIC HYPERTENSION">CRONIC HYPERTENSION</option>
+                <option value="TORCH CMB IgG REACTIVE AND RUBELLA REACTIVE">TORCH CMB IgG REACTIVE AND RUBELLA REACTIVE</option>
+                <option value="UTI AND FEVER">UTI AND FEVER</option>
+                <option value="FEVER AND INFECTION">FEVER AND INFECTION</option>
+                <option value="NORMAL">NORMAL</option>
+            </select>
 
             <label for="mode_of_delivery">Mode&nbsp;of&nbsp;Delivery:</label>
-            <input type="text" name="mode_of_delivery" required>
+            <select id="dropdown" name="mode_of_delivery" required>
+                <option value="LSCS">LSCS</option>
+                <option value="NORMAL">NORMAL</option>
+                <option value="NVD">NVD</option>
+                <option value="EMERGENCY LSCS MSL AND FOETAL DISTRESS">EMERGENCY LSCS MSL AND FOETAL DISTRESS</option>
+                <option value="ELECTIVE LSCS FGR">ELECTIVE LSCS FGR</option>
+                <option value="LSCS, NON PROGRESSION OF LABOUR">LSCS, NON PROGRESSION OF LABOUR</option>
+                <option value="EMERGENCY LSCS ">EMERGENCY LSCS </option>
+                <option value="EMERGENCY LSCS NON PROGRESSION OF LABOUR">EMERGENCY LSCS NON PROGRESSION OF LABOUR</option>
+                <option value="EMERGENCY LSCS GRADE 2 MSL ">EMERGENCY LSCS GRADE 2 MSL </option>
+                <option value="NVD MSL">NVD MSL</option>
+            </select>
 
 
             
@@ -141,30 +172,33 @@
 
         <div>
             <label for="birth_weight">Birth&nbsp;Weight&nbsp;(g):</label>
-            <input type="number" name="birth_weight" step="0.01" required>
+            <input type="number" name="birth_weight" step="0.01" placeholder = 'eg: 2.98' required>
 
             <label for="gender">Gender:</label>
-            <input type="text" name="gender" required>
+            <select id="dropdown" name="gender" required>
+                <option value="MALE">MALE</option>
+                <option value="FEMALE">FEMALE</option>
+            </select>
         
         </div>
 
         <div>
 
             <label for="tlc">TLC:</label>
-            <input type="text" name="tlc" required>
+            <input type="text" name="tlc" placeholder="eg: 16500" required>
 
             <label for="it_ratio">I/T&nbsp;ratio:</label>
-            <input type="number" name="it_ratio" step="0.01" required>
+            <input type="number" name="it_ratio" step="0.01" placeholder="eg: 0.25" required>
             
         </div>
 
         <div>
             
             <label for="apgar_1min">Apgar&nbsp;Score&nbsp;(1min):</label>
-            <input type="number" name="apgar_1min" required>
+            <input type="number" name="apgar_1min" placeholder="eg: 7" required>
 
             <label for="apgar_5min">Apgar&nbsp;Score&nbsp;(5min):</label>
-            <input type="number" name="apgar_5min" required>
+            <input type="number" name="apgar_5min" placeholder="eg: 7" required>
 
         </div>
 
