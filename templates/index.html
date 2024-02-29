@@ -212,5 +212,37 @@
     {% if result %}
         <h2>{{ result }}</h2>
     {% endif %}
+
+    <script type="text/javascript">
+        // Function to redirect to the login page after 20 seconds of inactivity
+        function redirectAfterInactivity() {
+            window.location.href = "/login";
+        }
+
+        // Variable to hold the timeout reference
+        var inactivityTimeout;
+
+        // Function to reset the timeout
+        function resetInactivityTimeout() {
+            clearTimeout(inactivityTimeout);
+            inactivityTimeout = setTimeout(redirectAfterInactivity, 20000); // Reset the timeout
+        }
+
+        // Function to initialize the event listeners
+        function initializeEventListeners() {
+            // Start the timer initially
+            resetInactivityTimeout();
+
+            // Reset the timer on any interaction with the page
+            document.addEventListener("click", resetInactivityTimeout);
+            document.addEventListener("mousemove", resetInactivityTimeout);
+            document.addEventListener("keydown", resetInactivityTimeout);
+        }
+
+        // Call the function to initialize event listeners when the page loads
+        document.addEventListener("DOMContentLoaded", initializeEventListeners);
+    </script>
+
+
 </body>
 </html>

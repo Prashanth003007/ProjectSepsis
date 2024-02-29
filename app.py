@@ -141,7 +141,7 @@ def login():
 
     if form.validate_on_submit():
         # For simplicity, hardcoding a username and password
-        if form.username.data == 'agent1' and form.password.data == 'agent@007':
+        if form.username.data == 'Doctor' and form.password.data == 'Doc@12345678$':
             user = User()
             user.id = '1'
             login_user(user)
