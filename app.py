@@ -23,7 +23,6 @@ class User(UserMixin):
 
 @login_manager.user_loader
 def load_user(user_id):
-    # For simplicity, using a single user with ID 1 for authentication
     if user_id == '1':
         user = User()
         user.id = user_id
@@ -36,34 +35,6 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password:', validators=[DataRequired()])
     submit = SubmitField('Login')
 
-# Load the RandomForest model and dataset
-file_path = 'sepsis data.xlsx'
-df = pd.read_excel(file_path)
-
-# Check for missing values in the 'WARD' column
-if df['WARD'].isnull().any():
-    df = df.dropna(subset=['WARD'])
-
-# Define features (X) and target (y)
-X = df.drop(['Name', 'IP no.', 'WARD'],axis=1)
-y = df['WARD']
-
-# Initialize label encoders for each categorical column
-label_encoders = {}
-categorical_columns = ['GENDER', 'MATERNAL HEALTH','DELIVERY MODE']
-
-for column in categorical_columns:
-    label_encoders[column] = LabelEncoder()
-    X[column] = label_encoders[column].fit_transform(X[column])
-
-
-clf = RandomForestClassifier(n_estimators=200, max_depth=10, min_samples_split=2, min_samples_leaf=1, random_state=42)
-clf.fit(X, y)
-
-# Save label encoders and model
-joblib.dump(label_encoders, 'label_encoders.joblib')
-joblib.dump(clf, 'random_forest_model.joblib')
-
 # Define the home route
 @app.route('/', methods=['GET', 'POST'])
 @login_required
@@ -71,14 +42,28 @@ def index():
     result_rf = None
 
     if request.method == 'POST':
-        # Check if the user is logged in
         if current_user.is_authenticated:
-            # Load label encoder and model for RandomForest
-            label_encoders = joblib.load('label_encoders.joblib')
-            clf_rf = joblib.load('random_forest_model.joblib')
-
             # Load the latest DataFrame from the Excel file
-            df_existing = pd.read_excel('sepsis data.xlsx')
+            df = pd.read_excel('sepsis data.xlsx')
+
+            # Check for missing values in the 'WARD' column
+            if df['WARD'].isnull().any():
+                df = df.dropna(subset=['WARD'])
+
+            # Define features (X) and target (y)
+            X = df.drop(['Name', 'IP no.', 'WARD'], axis=1)
+            y = df['WARD']
+
+            # Initialize label encoders for each categorical column
+            label_encoders = {}
+            categorical_columns = ['GENDER', 'MATERNAL HEALTH', 'DELIVERY MODE']
+
+            for column in categorical_columns:
+                label_encoders[column] = LabelEncoder()
+                X[column] = label_encoders[column].fit_transform(X[column])
+
+            # Load the RandomForest model
+            clf_rf = joblib.load('random_forest_model.joblib')
 
             # Get user input from the form
             user_data = {
@@ -112,7 +97,7 @@ def index():
             # Make prediction
             prediction = clf_rf.predict(user_data_df)
 
-             # Display the result
+            # Display the result
             result = f"Predicted ward: {prediction[0]}"
 
             # Add predicted WARD to the user data DataFrame
@@ -128,7 +113,7 @@ def index():
             updated_df = pd.concat([df, user_data_df], ignore_index=True)
 
             # Save the updated DataFrame to the Excel file
-            updated_df.to_excel(file_path, index=False)
+            updated_df.to_excel('sepsis data.xlsx', index=False)
 
             return render_template('index.html', result=result)
 
@@ -140,7 +125,6 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        # For simplicity, hardcoding a username and password
         if form.username.data == 'Doctor' and form.password.data == 'Doc@12345678$':
             user = User()
             user.id = '1'
@@ -161,7 +145,7 @@ def logout():
 @login_required
 def download_excel():
     # Load the latest DataFrame from the Excel file
-    df = pd.read_excel(file_path)
+    df = pd.read_excel('sepsis data.xlsx')
 
     # Create a BytesIO object to store the Excel file
     excel_data = BytesIO()
