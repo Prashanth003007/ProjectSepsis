@@ -45,6 +45,12 @@ def index():
         if current_user.is_authenticated:
             # Load the latest DataFrame from the Excel file
             df = pd.read_excel('sepsis data.xlsx')
+            
+            # Load or create "sepsis data op.xlsx" for new data tracking
+            try:
+                df_op = pd.read_excel('sepsis data op.xlsx')
+            except FileNotFoundError:
+                df_op = pd.DataFrame()  # Create an empty DataFrame if the file doesn't exist
 
             # Check for missing values in the 'WARD' column
             if df['WARD'].isnull().any():
@@ -107,13 +113,19 @@ def index():
             for column in categorical_columns:
                 user_data_df[column] = label_encoders[column].inverse_transform(user_data_df[column])
 
-            # Append user details to the existing DataFrame
+            # Append user details to the existing DataFrame (sepsis data.xlsx)
             user_data_df['Name'] = request.form['name']
             user_data_df['IP no.'] = int(request.form['ip_no'])
             updated_df = pd.concat([df, user_data_df], ignore_index=True)
 
-            # Save the updated DataFrame to the Excel file
+            # Save the updated DataFrame to 'sepsis data.xlsx'
             updated_df.to_excel('sepsis data.xlsx', index=False)
+
+            # Append new user data to 'sepsis data op.xlsx' (only new entries)
+            df_op = pd.concat([df_op, user_data_df], ignore_index=True)
+
+            # Save only new data to 'sepsis data op.xlsx'
+            df_op.to_excel('sepsis data op.xlsx', index=False)
 
             return render_template('index.html', result=result)
 
@@ -140,24 +152,24 @@ def logout():
     logout_user()
     return redirect(url_for('login'))
 
-# Define a new route for downloading the Excel file
+# Define a new route for downloading the "sepsis data op.xlsx" file
 @app.route('/download_excel')
 @login_required
 def download_excel():
-    # Load the latest DataFrame from the Excel file
-    df = pd.read_excel('sepsis data.xlsx')
+    # Load the latest DataFrame from "sepsis data op.xlsx"
+    df_op = pd.read_excel('sepsis data op.xlsx')
 
     # Create a BytesIO object to store the Excel file
     excel_data = BytesIO()
 
     # Use pandas to_excel function to write the DataFrame to BytesIO as an Excel file
-    df.to_excel(excel_data, index=False)
+    df_op.to_excel(excel_data, index=False)
 
     # Set the file pointer to the beginning of the BytesIO object
     excel_data.seek(0)
 
     # Return the Excel file as a response with appropriate headers
-    return send_file(excel_data, download_name='care_type_predictions.xlsx', as_attachment=True)
+    return send_file(excel_data, download_name='sepsis_data_op.xlsx', as_attachment=True)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
